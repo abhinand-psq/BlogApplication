@@ -13,6 +13,7 @@ const [editsummary,seteditsummary]=useState('')
 const [edittitle,setedittitle]=useState('')
 const [editcontent,seteditcontent]=useState('')
 const [first, setfirst] = useState(false)
+const [disables,setdisables]=useState(false)
 useEffect(() => {
  fetch(`${UrlLink}/editpost/${id}`,{
     method:'GET'
@@ -24,6 +25,7 @@ useEffect(() => {
     seteditcontent(data.result.content)
     setnewimage(data.result.image)
     setuserid(data.result.id)
+
    })
 })  
 }, [])
@@ -50,7 +52,12 @@ useEffect(() => {
 
 const hanldeupdate=(e)=>{
 e.preventDefault()
-try{
+let a=newimage.name.split('.')
+console.log(newimage);
+console.log(a[1]);
+if(a[1]==='jpg' || a[1]==='png' || a[1]==='jpeg'){
+  alert("working")
+  try{
   const newdata=new FormData()
 newdata.set('title',edittitle)
 newdata.set('summary',editsummary)
@@ -73,7 +80,11 @@ credentials:'include'
   })
 })
 }catch(e){
-alert('sdf')
+alert('sorry error')
+}  
+}else{
+  alert("not working")
+setdisables(true)  
 }
 }
 
@@ -97,7 +108,8 @@ alert('sdf')
         <br></br>
         <div class="form-group">
         <label> image </label>
-          <input type="file" class="form-control" name="summery"  onChange={(e)=>{setnewimage(e.target.files[0]);setfirst(true)}} placeholder="image" />
+          <input type="file" class="form-control" name="summery"  onChange={(e)=>{setnewimage(e.target.files[0]);setfirst(true);setdisables(false)
+          }} placeholder="image" />
         </div>
         <br></br>
          
@@ -112,9 +124,12 @@ alert('sdf')
         </ReactQuill >
         <br></br>
         <div class="form-group">
-           <button name="Submit" value="Publish" class="btn btn-primary form-control" 
-           >Edit post</button>
+          
+            <button name="Submit"value="Publish" class="btn btn-primary form-control" 
+            >Edit post</button>
+          
         </div>
+        {disables ? <h1>image formate must be jpg or png</h1> : null}
        {error ? error : null}
       </form>
     </div>

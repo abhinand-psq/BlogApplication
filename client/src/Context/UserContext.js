@@ -3,10 +3,10 @@ export const Usercontext=createContext(null)
 
 function ContextOne({children}){
 
-const [userinfo,setuserinfo]=useState(null)
+const [user,setuserinfo]=useState(null)
 
     return(
-        <Usercontext.Provider value={{userinfo,setuserinfo}}>
+        <Usercontext.Provider value={{user,setuserinfo}}>
     {children}
     </Usercontext.Provider>
 

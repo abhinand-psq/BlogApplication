@@ -8,7 +8,7 @@ import Header from '../Header/Header';
 function PostPage(props) {
   
 const history=useNavigate()
-  const {userinfo,setuserinfo}=useContext(Usercontext)
+  const {user,setuserinfo}=useContext(Usercontext)
 
   function handleedit(id){
     console.log(id);
@@ -22,6 +22,7 @@ const history=useNavigate()
       method:'DELETE'
     }).then((res)=>{
       res.json().then((data)=>{
+        window.location.reload()
          history('/')
       })
     })
@@ -45,7 +46,7 @@ const history=useNavigate()
               console.log(responses.result[0]);
               setdatas(responses.result[0])
               setcmnt(responses.result[0].comments)
-              console.log(userinfo);
+              console.log(user);
               console.log(responses.result[0].id);
             }
           })
@@ -61,12 +62,12 @@ const history=useNavigate()
   return (
    <div>
     
-    <div className='container-fluid px-5'>
+    <div className='container px-5'>
        <h2 className='headtxt'>{datas ? datas.title : null}</h2>
        <div>
     
-       <div className="image border-0 text-center">
-       <img className='MainImage' src={datas ? `${UrlLink}/${datas.image}` : null} class="img-fluid w-50" style={{height:'250px'}}  alt=""/>
+       <div className="image">
+       <img className='MainImage' src={datas ? `${UrlLink}/${datas.image}` : null} class="img-fluid "   alt=""/>
         </div>
        </div >
        <div className='text-center'>
@@ -91,19 +92,25 @@ const history=useNavigate()
       }
 
         </div>
-       <div className='text-center px-5 pt-3'>
+       <div className=''>
        <div className='maincontent' style={{}} dangerouslySetInnerHTML={{__html:datas ? datas.content : null}}></div>
        </div>
        <div>
-        <div id='mainone' class="container justify-content-center mt-5 border-left border-right">
-    <div class="d-flex justify-content-center pt-3 pb-2"> <input type="text" name="text" value={comments} onChange={(e)=>{setcomment(e.target.value)}} placeholder="+ Add a note" class="form-control addtxt"/> </div>
+<section className='section2'>
+<div className='container'>
+   {
+    user &&
+    <div > 
+    <input type="text" name="text" value={comments} onChange={(e)=>{setcomment(e.target.value)}} placeholder="+ Add a note" class="form-control addtxt"/>
+     </div>
+   }
   {
 comments ?
-<div class="d-flex justify-content-center py-2">
+<div class="inpbut">
     <button onClick={()=>{
        fetch(`${UrlLink}/PostPage/${datas._id}`,{
            method:'POST',
-           body:JSON.stringify({comments,name:userinfo.name}),
+           body:JSON.stringify({comments,name:user.name}),
            headers:{'Content-Type':'application/json'},
            credentials:'include'
         }).then((val)=>{
@@ -120,17 +127,20 @@ comments ?
   }
     
     </div>
+</section>
    {
     cmt?
     cmt.map((obj)=>{
         return(
-            <div class="d-flex justify-content-center py-2">
+           <div id='cmnt'>
+             <div  class="d-flex justify-content-center  py-2">
             <div class="second py-2 px-2"> <span class="text1">{obj.comnts}</span>
                 <div class="d-flex justify-content-between py-1 pt-2">
                     <div><span class="text3">{obj.name}</span><span class="thumbup"><i class="fa fa-thumbs-o-up"></i></span><span class="text4"></span></div>
                 </div>
             </div>
         </div>
+           </div>
         )
     }) : null
    } 

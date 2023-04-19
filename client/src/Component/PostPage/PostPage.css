@@ -4,17 +4,10 @@
     margin-bottom: 44px;
 }
 #mainone{
-	width: 1000px;
+	width: 100px;
 }
-.addtxt{
-	padding-top: 10px;
-	padding-bottom: 10px;
-	text-align: center;
-	font-size: 13px;
-	width: 700px;
-	background-color: #e5e8ed;
-	font-weight: 500;
-}
+
+
 .form-control:focus{
 	color: #000;
 }
@@ -86,4 +79,64 @@ button svg{
 #btn1{
 	align-items: center;
 	gap: 3px;
+}
+
+.image{
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	margin-bottom:80px;
+}
+
+.image img{
+	width: 800px;
+	height: 300px;
+	
+}
+
+.section2 .container{
+	display: flex;
+	width: 100%;
+	justify-content: center;
+	position: relative;
+}
+.section2 input[type='text']{
+	width: 400px;
+	
+}
+
+
+@media(max-width:365px){
+	.section2 .container{
+		display: flex;
+		width: 50%;
+		justify-content: center;
+		
+	}
+	input[type='text']{
+		width: 270px;
+		
+	}
+	
+}
+
+
+
+
+@media(max-width:545px){
+	.inpbut{
+		position: absolute;
+		top: 50px;
+		margin-bottom: 30px;
+	}
+	
+}
+
+.inpbut{
+	margin-left: 20px;
+	margin-bottom: 15px;
+}
+
+#cmnt{
+	padding-top: 30px;
 }

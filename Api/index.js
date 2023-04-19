@@ -63,9 +63,11 @@ if(err){
 
 app.get('/checkjwt',async(req,res)=>{
   if(req.cookies.token){
+    
 const check= await jwt.verify(req.cookies.token,'thisisasceew')
 if(check){
-  res.cookie('userid',check.id).json({responses:true,result:check})
+ 
+  res.status(200).json({responses:true,result:check})
 }else{
   res.status(400).json({responses:false,result:"i like your smartness but dont be over smart"})
 }
@@ -116,6 +118,7 @@ app.post('/Blogpost',upload.single('image'),async(req,res)=>{
   })
 
 app.get('/getblog',(req,res)=>{
+  console.log("hs");
   userinfo.getdata().then((data)=>{
    res.status(200).json({result:data})
   })
@@ -172,6 +175,54 @@ app.delete('/deletblog/:id',(req,res)=>{
 userinfo.blogdelet(req.params.id).then(()=>{
   res.status(200).json({result:"delet success"})
 })
+})
+
+app.post('/addtofav',(req,res)=>{
+console.log(req.body);
+userinfo.addtofav(req.body)
+})
+
+app.get('/addtofav',async(req,res)=>{
+  console.log(req.cookies);
+ let data= await jwt.verify(req.cookies.token,'thisisasceew')
+ userinfo.getwishlist(data.id).then((data)=>{
+  console.log(data);
+  res.status(200).json(data)
+ })
+})
+
+app.get('/editprofile',async(req,res)=>{
+  if(req.cookies.token!==''){
+    console.log(req.cookies);
+   const data=await jwt.verify(req.cookies.token,'thisisasceew')
+   console.log(data.id);
+   userinfo.Editprofile(data.id).then((responses)=>{
+    console.log(responses);
+    res.status(200).json(responses)
+   })
+  }else{
+  res.status(400).json()
+  }
+
+})
+
+app.put('/editprofile',(req,res)=>{
+  userinfo.EditNow(req.body).then((data)=>{
+    const det={
+      id:data._id,
+      name:data.fname
+    }
+    console.log(det);
+    jwt.sign(det,'thisisasceew',{},(err,cookiedata)=>{
+    if(err){
+      res.status(400).json(false)
+    }else{
+      console.log("working");
+      res.cookie('token',cookiedata).json(true)
+
+    }
+    })
+  })
 })
 
 app.listen(port, () => {

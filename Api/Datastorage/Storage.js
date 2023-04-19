@@ -74,7 +74,7 @@ getdata:()=>{
               }
          },{$unwind:'$userinfo'},{$sort : { createdat  : -1 }},{ $limit : 10 } ])
          .toArray()
-        
+        console.log(datas);
    res(datas)
    })
 },
@@ -167,5 +167,83 @@ db.get().collection('blogdata').deleteOne({_id:new objectid(blogid)}).then((res)
 response(res)
 })
 })
+},
+addtofav:(reqbody)=>{
+  return new Promise(async(res,rej)=>{
+    let avail= await db.get().collection('favorite').findOne({userid:reqbody.userid})
+    console.log(avail);
+    if(!avail){
+      let favarray={
+        userid:reqbody.userid,
+        blogs:[reqbody.blogid]
+      }
+      db.get().collection('favorite').insertOne(favarray).then((data)=>{
+        res(data)
+      })
+    }else{
+      db.get().collection('favorite').updateOne({userid:reqbody.userid},{$push:{ blogs : reqbody.blogid }}).then((data)=>{
+        res(data)
+      })
+    }
+  })
+},
+getwishlist:(userinfo)=>{
+  return new Promise(async(res,rej)=>{
+let datas=await db.get().collection('favorite').aggregate([
+  
+  {
+  $match:{
+    userid:userinfo
+  }
+  },
+  {$unwind : '$blogs'},
+  {
+    $addFields: {
+      id: {
+        $toObjectId: "$blogs"
+      }
+    }
+  },
+  {
+    $lookup:{
+      from: "blogdata",
+      localField: "id",
+      foreignField: "_id",
+      as: "Wishlist"
+    },
+  },
+  {
+    $project:{
+       Wishlist:1
+    }
+  },{
+    $unwind:'$Wishlist'
+  }
+]).toArray()
+
+res(datas)
+  })
+},
+Editprofile:(objId)=>{
+  return new Promise((res,rej)=>{
+    db.get().collection('users').findOne({_id:new objectid(objId)}).then((data)=>{
+          res(data)
+    })
+  })
+},
+EditNow:(data)=>{
+  return new Promise((res,rej)=>{
+    db.get().collection('users').updateOne({_id:new objectid(data.id)},{
+      $set:{
+        fname:data.newname,
+        email:data.email
+      }
+    }).then((da)=>{
+      console.log(da);
+      db.get().collection('users').findOne({_id:new objectid(data.id)}).then((value)=>{
+        res(value)
+  })
+    })
+  })
 }
 }

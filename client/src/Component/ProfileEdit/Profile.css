@@ -1,0 +1,50 @@
+
+.Formsection .container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+
+.input-form{
+    margin-top: 30px;
+
+}
+.Profile-Form{
+    background: beige;
+
+    min-width: 100%;
+    padding: 40px;
+    border-radius: 10px;
+}
+
+.input-form input{
+    max-width: 100%;
+    width: 400px;
+    display: flex;
+    justify-content: center;
+    outline: none;
+    border: none;
+    border-radius: 10px;
+    height: 50px;
+}
+
+.input-form label{
+    display: flex;
+
+}
+.input-btn button{
+    width: 200px;
+    outline: none;
+    border: none;
+    border-radius: 10px;
+    height: 40px;
+    margin-top: 20px;
+    background: gray;
+}
+
+.input-btn{
+    display: flex;
+    justify-content: center;
+}

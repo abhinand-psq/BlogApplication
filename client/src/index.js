@@ -7,6 +7,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 import ContextOne from './Context/UserContext';
 import { CookiesProvider } from "react-cookie";
+import CreactBlogContext from './Context/Blog';
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -14,7 +16,9 @@ root.render(
    <Router>
    <ContextOne>
    <CookiesProvider>
-   <App />
+    <CreactBlogContext>
+    <App/>
+    </CreactBlogContext>
    </CookiesProvider>
    </ContextOne>
    </Router>
