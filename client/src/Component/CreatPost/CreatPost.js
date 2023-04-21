@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import ReactQuill from 'react-quill';
 import FormData from 'form-data'
 import 'react-quill/dist/quill.snow.css';
+import BarLoader from 'react-spinners/BarLoader';
 
 const modules = {
 
@@ -41,7 +42,7 @@ if(data.responses){
   
 
   const history=useNavigate()
-
+    const [start,setstart]=useState(false)
     const [title, settitle] = useState('')
     const [summary, setsummary] = useState('')
     const [content, setcontent] = useState('')
@@ -49,6 +50,7 @@ if(data.responses){
     const [errors,seterrors]=useState('')
 async function handleblogsubmit(e){
 e.preventDefault()
+setstart(true)
 const data = new FormData()
 data.set('image',image)
 data.set('title',title)
@@ -76,6 +78,9 @@ alert(err)
 
   return (
     <div>
+           <BarLoader 
+color={'#36d7b7'} loading={start} width={1510} height={8} size={150}
+/>
         <div class="container">
   <div class="row ">
     <div class="col-md-12 mt-5">

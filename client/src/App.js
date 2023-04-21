@@ -14,6 +14,7 @@ import Edit from './Layout/Edit';
 import Searchdata from './Component/Searchdata';
 import Search from './Layout/Search';
 import EditBlog from './Layout/EditBlog';
+import Errortext from './Component/Errortext';
 function App() {
 
   useEffect(() => {

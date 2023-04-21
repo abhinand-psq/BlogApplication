@@ -3,10 +3,13 @@ import './EditPage.css'
 import ReactQuill from 'react-quill'
 import { UrlLink } from '../../Links'
 import { useNavigate, useParams } from 'react-router-dom'
+import Errortext from '../Errortext'
+import BarLoader from 'react-spinners/BarLoader'
 function EditPost() {
   const history=useNavigate()
     const {id}=useParams()
-const [error,seterr]=useState('')    
+const [start,setstart]=useState(false)    
+const [yesimage,setyesimage]=useState(false)
 const [userid,setuserid]=useState('')    
 const [newimage, setnewimage] = useState('')
 const [editsummary,seteditsummary]=useState('')
@@ -52,44 +55,67 @@ useEffect(() => {
 
 const hanldeupdate=(e)=>{
 e.preventDefault()
-let a=newimage.name.split('.')
-console.log(newimage);
-console.log(a[1]);
-if(a[1]==='jpg' || a[1]==='png' || a[1]==='jpeg'){
-  alert("working")
-  try{
-  const newdata=new FormData()
-newdata.set('title',edittitle)
-newdata.set('summary',editsummary)
-newdata.set('content',editcontent)
-newdata.set('image',newimage)
-newdata.set('id',userid)
-fetch(`${UrlLink}/updateone/${id}`,{
-method:'PUT',
-body:newdata,
-credentials:'include'
-}).then((res)=>{
-  res.json().then((Data)=>{
-    console.log(Data);
-    if(Data.responses){
-      history('/')
-      setfirst(false)
-    }else{
-      seterr(Data.result)
-    }
-  })
-})
-}catch(e){
-alert('sorry error')
-}  
+setstart(true)
+if(yesimage){
+  let a=newimage.name.split('.')
+  if(a[1]==='jpg' || a[1]==='png' || a[1]==='jpeg'){
+    const newdata=new FormData()
+    newdata.set('title',edittitle)
+    newdata.set('summary',editsummary)
+    newdata.set('content',editcontent)
+    newdata.set('image',newimage)
+    newdata.set('id',userid)
+    fetch(`${UrlLink}/updateone/${id}`,{
+    method:'PUT',
+    body:newdata,
+    credentials:'include'
+    }).then((res)=>{
+      res.json().then((Data)=>{
+        console.log(Data);
+        if(Data.responses){
+          history('/')
+          setfirst(false)
+        }else{
+          
+        }
+      })
+    })
+  }else{
+    setdisables(true)  
+  }
 }else{
-  alert("not working")
-setdisables(true)  
+  const newdata=new FormData()
+  newdata.set('title',edittitle)
+  newdata.set('summary',editsummary)
+  newdata.set('content',editcontent)
+  newdata.set('image',newimage)
+  newdata.set('id',userid)
+  fetch(`${UrlLink}/updateone/${id}`,{
+  method:'PUT',
+  body:newdata,
+  credentials:'include'
+  }).then((res)=>{
+    res.json().then((Data)=>{
+      console.log(Data);
+      if(Data.responses){
+        history('/')
+        setfirst(false)
+      }else{
+       
+       
+      }
+    })
+  })
 }
+ 
+
 }
 
   return (
     <div>
+      <BarLoader 
+color={'#36d7b7'} loading={start} width={1510} height={8} size={150}
+/>
             <div>
         <div class="container">
   <div class="row ">
@@ -108,7 +134,7 @@ setdisables(true)
         <br></br>
         <div class="form-group">
         <label> image </label>
-          <input type="file" class="form-control" name="summery"  onChange={(e)=>{setnewimage(e.target.files[0]);setfirst(true);setdisables(false)
+          <input type="file" class="form-control" name="summery"  onChange={(e)=>{setnewimage(e.target.files[0]);setfirst(true);setyesimage(true); setdisables(false)  
           }} placeholder="image" />
         </div>
         <br></br>
@@ -129,8 +155,9 @@ setdisables(true)
             >Edit post</button>
           
         </div>
-        {disables ? <h1>image formate must be jpg or png</h1> : null}
-       {error ? error : null}
+       {
+        disables ? <Errortext/>:null
+       }
       </form>
     </div>
   </div>

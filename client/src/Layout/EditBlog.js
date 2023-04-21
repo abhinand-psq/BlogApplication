@@ -5,9 +5,7 @@ import { UrlLink } from '../Links'
 import { useNavigate } from 'react-router-dom'
 
 function EditBlog() {
-
     const history=useNavigate()
-
     useEffect(()=>{
         fetch(`${UrlLink}/checkjwt`,{
           method:'GET',

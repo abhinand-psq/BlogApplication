@@ -88,7 +88,7 @@ setuserdetails(null)
           }).then(()=>{
             setuserinfo(null)
            setuserdetails(null)
-           history('/login')
+           window.location.reload()
           })
         }} className='nav-link me-3'>logout</Link>
         </div>
