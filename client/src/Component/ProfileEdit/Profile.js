@@ -32,7 +32,7 @@ setid(data._id)
        <input type="text" class="form-control" defaultValue={newname}  name="title" placeholder="Title" onChange={(e)=>{setnewname(e.target.value)}} required/>
             <label htmlFor="">Name</label>
         </div>
-
+              
         <div className="input-form">
             <input type="email" defaultValue={email} onChange={(e)=>{setemail(e.target.value)}} />
             <label htmlFor="">Email</label>

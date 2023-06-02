@@ -62,8 +62,9 @@ if(err){
 })
 
 app.get('/checkjwt',async(req,res)=>{
+  console.log(req.cookies.token);
   if(req.cookies.token){
-    
+    console.log("entered")
 const check= await jwt.verify(req.cookies.token,'thisisasceew')
 if(check){
  
@@ -183,12 +184,16 @@ userinfo.addtofav(req.body)
 })
 
 app.get('/addtofav',async(req,res)=>{
-  console.log(req.cookies);
- let data= await jwt.verify(req.cookies.token,'thisisasceew')
- userinfo.getwishlist(data.id).then((data)=>{
-  console.log(data);
-  res.status(200).json(data)
- })
+  console.log(req.cookies.token);
+  if(req.cookies.token){
+    let data= await jwt.verify(req.cookies.token,'thisisasceew')
+    userinfo.getwishlist(data.id).then((data)=>{
+     console.log(data);
+     res.status(200).json(data)
+    })
+  }else{
+    res.status(500).json('not signed in')
+  }
 })
 
 app.get('/editprofile',async(req,res)=>{
